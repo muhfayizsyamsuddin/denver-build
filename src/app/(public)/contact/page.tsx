@@ -1,4 +1,11 @@
 import { ContactForm } from "@/app/components/public/contact-form";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Contact Denver Build to discuss your construction, renovation, or interior project.",
+};
 
 export default function ContactPage() {
   return (
