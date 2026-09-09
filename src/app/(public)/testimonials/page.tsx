@@ -62,21 +62,33 @@ export default async function TestimonialsPage() {
                   </blockquote>
 
                   <div className="mt-8 border-t border-white/10 pt-5">
-                    <p className="font-medium text-white">
-                      {testimonial.clientName}
-                    </p>
+                    <div className="flex items-center gap-4">
+                      {testimonial.clientPhotoUrl && (
+                        <img
+                          src={testimonial.clientPhotoUrl}
+                          alt={testimonial.clientName}
+                          className="h-12 w-12 rounded-full object-cover"
+                        />
+                      )}
 
-                    {(testimonial.clientRole ||
-                      testimonial.clientCompany) && (
-                      <p className="mt-1 text-xs text-neutral-500">
-                        {[
-                          testimonial.clientRole,
-                          testimonial.clientCompany,
-                        ]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </p>
-                    )}
+                      <div>
+                        <p className="font-medium text-white">
+                          {testimonial.clientName}
+                        </p>
+
+                        {(testimonial.clientRole ||
+                          testimonial.clientCompany) && (
+                          <p className="mt-1 text-xs text-neutral-500">
+                            {[
+                              testimonial.clientRole,
+                              testimonial.clientCompany,
+                            ]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </article>
               ))}

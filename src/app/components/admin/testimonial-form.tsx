@@ -22,8 +22,52 @@ type Props = {
 export function TestimonialForm({ testimonial }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState(
+    testimonial?.clientPhotoUrl ?? "",
+  );
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   const isEdit = Boolean(testimonial?.id);
+
+  async function handlePhotoUpload(file: File) {
+    const maxSize = 5 * 1024 * 1024;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only image files are allowed.");
+      return;
+    }
+
+    if (file.size > maxSize) {
+      toast.error("Image must be smaller than 5 MB.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    setUploadingPhoto(true);
+
+    try {
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.message ?? "Failed to upload photo.");
+        return;
+      }
+
+      setPhotoUrl(result.data.url);
+      toast.success("Client photo uploaded successfully.");
+    } catch {
+      toast.error("Failed to upload client photo.");
+    } finally {
+      setUploadingPhoto(false);
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,7 +83,7 @@ export function TestimonialForm({ testimonial }: Props) {
         clientRole: formData.get("clientRole"),
         clientCompany: formData.get("clientCompany"),
         content: formData.get("content"),
-        clientPhotoUrl: formData.get("clientPhotoUrl"),
+        clientPhotoUrl: photoUrl || null,
         rating: ratingValue ? Number(ratingValue) : null,
         isActive: formData.get("isActive") === "on",
       };
@@ -130,13 +174,46 @@ export function TestimonialForm({ testimonial }: Props) {
       <div className="grid gap-6 md:grid-cols-2">
         <div>
           <label className="text-sm text-neutral-300">
-            Client Photo URL
+            Client Photo
           </label>
+
           <input
-            name="clientPhotoUrl"
-            defaultValue={testimonial?.clientPhotoUrl ?? ""}
-            className={inputClass}
+            type="file"
+            accept="image/*"
+            disabled={uploadingPhoto}
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+
+              if (file) {
+                handlePhotoUpload(file);
+              }
+            }}
+            className="mt-2 block w-full text-sm text-neutral-400"
           />
+
+          {uploadingPhoto && (
+            <p className="mt-2 text-xs text-neutral-500">
+              Uploading photo...
+            </p>
+          )}
+
+          {photoUrl && (
+            <div className="mt-4">
+              <img
+                src={photoUrl}
+                alt="Client photo preview"
+                className="h-24 w-24 rounded-full object-cover"
+              />
+
+              <button
+                type="button"
+                onClick={() => setPhotoUrl("")}
+                className="mt-2 block text-xs text-red-400 hover:text-red-300"
+              >
+                Remove
+              </button>
+            </div>
+          )}
         </div>
 
         <div>

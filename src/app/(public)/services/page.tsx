@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import { Building2, Hammer, Paintbrush } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
@@ -7,6 +7,12 @@ export const metadata: Metadata = {
   title: "Services",
   description:
     "Explore Denver Build construction, renovation, interior, and building services.",
+};
+
+const serviceIcons = {
+  building: Building2,
+  hammer: Hammer,
+  paintbrush: Paintbrush,
 };
 
 export default async function ServicesPage() {
@@ -48,32 +54,46 @@ export default async function ServicesPage() {
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {services.map((service, index) => (
-                <article
-                  key={service.id}
-                  className="group rounded-xl border border-white/10 bg-neutral-900 p-6 transition hover:border-amber-500/30"
-                >
-                  <div className="flex items-start justify-between">
-                    <span className="text-sm font-medium text-amber-500">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+              {services.map((service, index) => {
+                const Icon =
+                  service.icon &&
+                  serviceIcons[service.icon as keyof typeof serviceIcons];
 
-                    {service.icon && (
-                      <span className="text-xs text-neutral-600">
-                        {service.icon}
-                      </span>
+                return (
+                  <article
+                    key={service.id}
+                    className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-900 transition hover:border-amber-500/30"
+                  >
+                    {service.imageUrl && (
+                      <img
+                        src={service.imageUrl}
+                        alt={service.name}
+                        className="aspect-[16/10] w-full object-cover"
+                      />
                     )}
-                  </div>
 
-                  <h2 className="mt-8 text-xl font-semibold transition group-hover:text-amber-400">
-                    {service.name}
-                  </h2>
+                    <div className="p-6">
+                      <div className="flex items-start justify-between">
+                        <span className="text-sm font-medium text-amber-500">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
 
-                  <p className="mt-4 text-sm leading-7 text-neutral-400">
-                    {service.description}
-                  </p>
-                </article>
-              ))}
+                        {Icon && (
+                          <Icon className="h-5 w-5 text-neutral-500" />
+                        )}
+                      </div>
+
+                      <h2 className="mt-8 text-xl font-semibold transition group-hover:text-amber-400">
+                        {service.name}
+                      </h2>
+
+                      <p className="mt-4 text-sm leading-7 text-neutral-400">
+                        {service.description}
+                      </p>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           )}
 

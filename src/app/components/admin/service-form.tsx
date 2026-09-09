@@ -22,8 +22,50 @@ type Props = {
 export function ServiceForm({ service }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(service?.imageUrl ?? "");
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const isEdit = Boolean(service?.id);
+
+  async function handleImageUpload(file: File) {
+    const maxSize = 5 * 1024 * 1024;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only image files are allowed.");
+      return;
+    }
+
+    if (file.size > maxSize) {
+      toast.error("Image must be smaller than 5 MB.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    setUploadingImage(true);
+
+    try {
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.message ?? "Failed to upload image.");
+        return;
+      }
+
+      setImageUrl(result.data.url);
+      toast.success("Service image uploaded successfully.");
+    } catch {
+      toast.error("Failed to upload service image.");
+    } finally {
+      setUploadingImage(false);
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,7 +79,7 @@ export function ServiceForm({ service }: Props) {
         name: formData.get("name"),
         slug: formData.get("slug"),
         description: formData.get("description"),
-        imageUrl: formData.get("imageUrl"),
+        imageUrl: imageUrl || null,
         icon: formData.get("icon"),
         displayOrder: Number(formData.get("displayOrder")),
         isActive: formData.get("isActive") === "on",
@@ -118,12 +160,47 @@ export function ServiceForm({ service }: Props) {
 
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <label className="text-sm text-neutral-300">Image URL</label>
+          <label className="text-sm text-neutral-300">
+            Service Image
+          </label>
+
           <input
-            name="imageUrl"
-            defaultValue={service?.imageUrl ?? ""}
-            className={inputClass}
+            type="file"
+            accept="image/*"
+            disabled={uploadingImage}
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+
+              if (file) {
+                handleImageUpload(file);
+              }
+            }}
+            className="mt-2 block w-full text-sm text-neutral-400"
           />
+
+          {uploadingImage && (
+            <p className="mt-2 text-xs text-neutral-500">
+              Uploading image...
+            </p>
+          )}
+
+          {imageUrl && (
+            <div className="mt-4">
+              <img
+                src={imageUrl}
+                alt="Service preview"
+                className="aspect-video w-full rounded-lg object-cover"
+              />
+
+              <button
+                type="button"
+                onClick={() => setImageUrl("")}
+                className="mt-2 text-xs text-red-400 hover:text-red-300"
+              >
+                Remove
+              </button>
+            </div>
+          )}
         </div>
 
         <div>
