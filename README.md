@@ -80,4 +80,9 @@ buat file src/types/next-auth.d.ts
 buat file route handler auth -> src/app/api/auth/[...nextauth]/route.ts
 tambahkan env AUTH_SECRET="2c27b700acccc381d938209e29c6ea81f58d3f4c5c77470e864c2f20efe8d9af" di .env -> generate: npx auth secret
 build dlu memastikan aman: npm run build
-5. Protected /admin
+
+- ngoding Protected /admin
+
+npm install lucide-react
+npm install zod
+npm install sonner
