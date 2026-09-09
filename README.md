@@ -86,3 +86,8 @@ build dlu memastikan aman: npm run build
 npm install lucide-react
 npm install zod
 npm install sonner
+npm install cloudinary
+    sisa salin env projetc sebelumnya: 
+        CLOUDINARY_CLOUD_NAME="..."
+        CLOUDINARY_API_KEY="..."
+        CLOUDINARY_API_SECRET="..."
