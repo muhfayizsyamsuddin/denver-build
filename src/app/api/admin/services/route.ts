@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const serviceSchema = z.object({
@@ -16,7 +15,7 @@ const serviceSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -26,6 +25,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
+
   const parsed = serviceSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -51,6 +51,9 @@ export async function POST(request: Request) {
   const service = await prisma.service.create({
     data: parsed.data,
   });
+
+  revalidatePath("/");
+  revalidatePath("/services");
 
   return NextResponse.json(
     {

@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const projectSchema = z.object({
@@ -20,7 +19,7 @@ const projectSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -69,6 +68,10 @@ export async function POST(request: Request) {
       images: true,
     },
   });
+
+  revalidatePath("/");
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${project.slug}`);
 
   return NextResponse.json(
     {

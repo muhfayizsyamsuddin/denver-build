@@ -1,11 +1,9 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
-
-import { authOptions } from "@/auth";
 import { cloudinary } from "@/lib/cloudinary";
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(

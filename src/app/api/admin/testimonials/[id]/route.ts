@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const testimonialSchema = z.object({
@@ -22,7 +21,7 @@ type Context = {
 };
 
 export async function PUT(request: Request, context: Context) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -34,6 +33,7 @@ export async function PUT(request: Request, context: Context) {
   const { id } = await context.params;
 
   const body = await request.json();
+
   const parsed = testimonialSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -44,7 +44,9 @@ export async function PUT(request: Request, context: Context) {
   }
 
   const existing = await prisma.testimonial.findUnique({
-    where: { id },
+    where: {
+      id,
+    },
   });
 
   if (!existing) {
@@ -55,9 +57,14 @@ export async function PUT(request: Request, context: Context) {
   }
 
   const testimonial = await prisma.testimonial.update({
-    where: { id },
+    where: {
+      id,
+    },
     data: parsed.data,
   });
+
+  revalidatePath("/");
+  revalidatePath("/testimonials");
 
   return NextResponse.json({
     message: "Testimonial updated successfully.",
@@ -69,7 +76,7 @@ export async function DELETE(
   _request: Request,
   context: Context,
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -81,7 +88,9 @@ export async function DELETE(
   const { id } = await context.params;
 
   const existing = await prisma.testimonial.findUnique({
-    where: { id },
+    where: {
+      id,
+    },
   });
 
   if (!existing) {
@@ -92,8 +101,13 @@ export async function DELETE(
   }
 
   await prisma.testimonial.delete({
-    where: { id },
+    where: {
+      id,
+    },
   });
+
+  revalidatePath("/");
+  revalidatePath("/testimonials");
 
   return NextResponse.json({
     message: "Testimonial deleted successfully.",

@@ -1,8 +1,6 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const statusSchema = z.object({
@@ -16,7 +14,7 @@ type Context = {
 };
 
 export async function PATCH(request: Request, context: Context) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(

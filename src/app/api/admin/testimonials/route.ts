@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const testimonialSchema = z.object({
@@ -16,7 +15,7 @@ const testimonialSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -26,6 +25,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
+
   const parsed = testimonialSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -38,6 +38,9 @@ export async function POST(request: Request) {
   const testimonial = await prisma.testimonial.create({
     data: parsed.data,
   });
+
+  revalidatePath("/");
+  revalidatePath("/testimonials");
 
   return NextResponse.json(
     {

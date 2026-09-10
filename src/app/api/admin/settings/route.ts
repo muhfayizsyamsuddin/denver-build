@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const settingsSchema = z.object({
@@ -16,7 +15,7 @@ const settingsSchema = z.object({
 });
 
 export async function PUT(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -26,6 +25,7 @@ export async function PUT(request: Request) {
   }
 
   const body = await request.json();
+
   const parsed = settingsSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -47,6 +47,13 @@ export async function PUT(request: Request) {
     : await prisma.siteSettings.create({
         data: parsed.data,
       });
+
+  revalidatePath("/");
+  revalidatePath("/about");
+  revalidatePath("/services");
+  revalidatePath("/projects");
+  revalidatePath("/testimonials");
+  revalidatePath("/contact");
 
   return NextResponse.json({
     message: "Website settings saved successfully.",

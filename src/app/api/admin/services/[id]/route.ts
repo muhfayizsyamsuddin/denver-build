@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const serviceSchema = z.object({
@@ -22,7 +21,7 @@ type Context = {
 };
 
 export async function PUT(request: Request, context: Context) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -32,6 +31,7 @@ export async function PUT(request: Request, context: Context) {
   }
 
   const { id } = await context.params;
+
   const body = await request.json();
 
   const parsed = serviceSchema.safeParse(body);
@@ -79,6 +79,9 @@ export async function PUT(request: Request, context: Context) {
     data: parsed.data,
   });
 
+  revalidatePath("/");
+  revalidatePath("/services");
+
   return NextResponse.json({
     message: "Service updated successfully.",
     data: service,
@@ -89,7 +92,7 @@ export async function DELETE(
   _request: Request,
   context: Context,
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -118,6 +121,9 @@ export async function DELETE(
       id,
     },
   });
+
+  revalidatePath("/");
+  revalidatePath("/services");
 
   return NextResponse.json({
     message: "Service deleted successfully.",

@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const companySchema = z.object({
@@ -22,7 +21,7 @@ const companySchema = z.object({
 });
 
 export async function PUT(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -59,6 +58,11 @@ export async function PUT(request: Request) {
     : await prisma.companyProfile.create({
         data,
       });
+
+  // Refresh public pages that use company profile data
+  revalidatePath("/");
+  revalidatePath("/about");
+  revalidatePath("/contact");
 
   return NextResponse.json({
     message: "Company profile saved successfully.",

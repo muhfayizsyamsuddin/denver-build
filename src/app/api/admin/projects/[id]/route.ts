@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const projectSchema = z.object({
@@ -26,7 +25,7 @@ type Context = {
 };
 
 export async function PUT(request: Request, context: Context) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -48,7 +47,9 @@ export async function PUT(request: Request, context: Context) {
   }
 
   const existing = await prisma.project.findUnique({
-    where: { id },
+    where: {
+      id,
+    },
   });
 
   if (!existing) {
@@ -74,6 +75,7 @@ export async function PUT(request: Request, context: Context) {
     );
   }
 
+  const oldSlug = existing.slug;
   const { galleryImages, ...data } = parsed.data;
 
   const project = await prisma.$transaction(async (tx) => {
@@ -103,6 +105,12 @@ export async function PUT(request: Request, context: Context) {
     });
   });
 
+  revalidatePath("/");
+  revalidatePath("/projects");
+
+  revalidatePath(`/projects/${oldSlug}`);
+  revalidatePath(`/projects/${project.slug}`);
+
   return NextResponse.json({
     message: "Project updated successfully.",
     data: project,
@@ -113,7 +121,7 @@ export async function DELETE(
   _request: Request,
   context: Context,
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await requireAdmin();
 
   if (!session) {
     return NextResponse.json(
@@ -142,6 +150,10 @@ export async function DELETE(
       id,
     },
   });
+
+  revalidatePath("/");
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${existing.slug}`);
 
   return NextResponse.json({
     message: "Project deleted successfully.",
