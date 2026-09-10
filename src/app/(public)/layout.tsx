@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { PublicNavbar } from "@/app/components/public/public-navbar";
 import { PublicFooter } from "@/app/components/public/public-footer";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await prisma.siteSettings.findFirst();
 
