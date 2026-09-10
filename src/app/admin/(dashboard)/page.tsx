@@ -3,8 +3,10 @@ import {
   Wrench,
   MessageSquareQuote,
   Mail,
+  Plus,
+  Inbox,
 } from "lucide-react";
-
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
 export default async function AdminDashboardPage() {
@@ -66,6 +68,31 @@ export default async function AdminDashboardPage() {
         <p className="mt-2 text-sm text-neutral-400">
           Overview of your website content and customer inquiries.
         </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/admin/projects/new"
+            className="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
+          >
+            <Plus className="h-4 w-4" />
+            Add Project
+          </Link>
+
+          <Link
+            href="/admin/services/new"
+            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-neutral-900 px-4 py-2.5 text-sm font-medium text-neutral-300 transition hover:border-amber-500/30 hover:text-white"
+          >
+            <Wrench className="h-4 w-4 text-neutral-500" />
+            Add Service
+          </Link>
+
+          <Link
+            href="/admin/inquiries"
+            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-neutral-900 px-4 py-2.5 text-sm font-medium text-neutral-300 transition hover:border-amber-500/30 hover:text-white"
+          >
+            <Inbox className="h-4 w-4 text-neutral-500" />
+            View Inquiries
+          </Link>
+        </div>
       </div>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -75,7 +102,7 @@ export default async function AdminDashboardPage() {
           return (
             <div
               key={stat.label}
-              className="rounded-xl border border-white/10 bg-neutral-900 p-5"
+              className="rounded-xl border border-white/10 bg-neutral-900 p-5 transition hover:border-amber-500/30"
             >
               <div className="flex items-center justify-between">
                 <p className="text-sm text-neutral-400">
@@ -126,8 +153,13 @@ export default async function AdminDashboardPage() {
                       key={inquiry.id}
                       className="border-b border-white/5 last:border-0"
                     >
-                      <td className="px-5 py-4 text-neutral-200">
-                        {inquiry.name}
+                      <td className="px-5 py-4">
+                        <Link
+                          href={`/admin/inquiries/${inquiry.id}`}
+                          className="font-medium text-neutral-200 transition hover:text-amber-400"
+                        >
+                          {inquiry.name}
+                        </Link>
                       </td>
 
                       <td className="px-5 py-4 text-neutral-400">
@@ -151,7 +183,7 @@ export default async function AdminDashboardPage() {
           )}
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-neutral-900 p-5">
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
           <p className="text-sm text-neutral-400">
             New Inquiries
           </p>

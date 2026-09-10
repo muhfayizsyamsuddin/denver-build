@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
@@ -54,22 +54,20 @@ export default async function ProjectsPage() {
                   href={`/projects/${project.slug}`}
                   className="group overflow-hidden rounded-xl border border-white/10 bg-neutral-900 transition hover:border-amber-500/30"
                 >
-                  <div className="aspect-4/3 bg-neutral-800">
-                    {project.thumbnailUrl ? (
-                      <img
+                  {project.thumbnailUrl && (
+                    <div className="relative aspect-16/10 overflow-hidden">
+                      <Image
                         src={project.thumbnailUrl}
                         alt={project.title}
-                        className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                        fill
+                        className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-sm text-neutral-600">
-                        No image
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   <div className="p-6">
-                    <p className="text-xs uppercase tracking-wide text-amber-500">
+                    <p className="text-xs font-medium uppercase tracking-wide text-amber-500">
                       {project.category}
                     </p>
 
@@ -81,9 +79,15 @@ export default async function ProjectsPage() {
                       {project.shortDescription}
                     </p>
 
-                    <p className="mt-5 text-xs text-neutral-500">
-                      {project.location} · {project.completionYear}
-                    </p>
+                    <div className="mt-5 flex items-center justify-between gap-4">
+                      <p className="text-xs text-neutral-500">
+                        {project.location} · {project.completionYear}
+                      </p>
+
+                      <span className="text-sm text-neutral-500 transition group-hover:text-amber-400">
+                        View →
+                      </span>
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -91,6 +95,27 @@ export default async function ProjectsPage() {
           )}
         </div>
       </section>
+      <div className="mt-16 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-6 py-12 text-center sm:px-10">
+        <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
+          Planning a Project?
+        </p>
+
+        <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight">
+          Let&apos;s discuss what you want to build.
+        </h2>
+
+        <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-neutral-400">
+          Tell us about your project requirements and we&apos;ll help you discuss
+          the next steps.
+        </p>
+
+        <Link
+          href="/contact"
+          className="mt-7 inline-flex rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
+        >
+          Request a Consultation
+        </Link>
+      </div>
     </main>
   );
 }

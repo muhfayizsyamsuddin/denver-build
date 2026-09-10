@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  FolderKanban,
+  Star,
+} from "lucide-react";
 
 import { prisma } from "@/lib/prisma";
 import { DeleteProjectButton } from "@/app/components/admin/delete-project-button";
@@ -15,7 +20,9 @@ export default async function ProjectsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Projects</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Projects
+          </h1>
 
           <p className="mt-2 text-sm text-neutral-400">
             Manage construction projects displayed on the public website.
@@ -33,13 +40,30 @@ export default async function ProjectsPage() {
 
       <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
         {projects.length === 0 ? (
-          <div className="px-6 py-12 text-center text-sm text-neutral-500">
-            No projects yet.
+          <div className="px-6 py-14 text-center">
+            <FolderKanban className="mx-auto h-8 w-8 text-neutral-700" />
+
+            <p className="mt-4 text-sm font-medium text-neutral-300">
+              No projects yet
+            </p>
+
+            <p className="mt-1 text-sm text-neutral-500">
+              Add your first construction project to showcase it on the
+              website.
+            </p>
+
+            <Link
+              href="/admin/projects/new"
+              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
+            >
+              <Plus className="h-4 w-4" />
+              Add Project
+            </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-white/10 text-neutral-500">
+              <thead className="border-b border-white/10 bg-white/2 text-neutral-500">
                 <tr>
                   <th className="px-5 py-3 font-medium">Project</th>
                   <th className="px-5 py-3 font-medium">Category</th>
@@ -54,12 +78,15 @@ export default async function ProjectsPage() {
                 {projects.map((project) => (
                   <tr
                     key={project.id}
-                    className="border-b border-white/5 last:border-0"
+                    className="border-b border-white/5 transition hover:bg-white/2 last:border-0"
                   >
                     <td className="px-5 py-4">
-                      <p className="font-medium text-neutral-200">
+                      <Link
+                        href={`/admin/projects/${project.id}/edit`}
+                        className="font-medium text-neutral-200 transition hover:text-amber-400"
+                      >
                         {project.title}
-                      </p>
+                      </Link>
 
                       <p className="mt-1 text-xs text-neutral-500">
                         {project.slug}
@@ -86,16 +113,24 @@ export default async function ProjectsPage() {
                       </span>
                     </td>
 
-                    <td className="px-5 py-4 text-neutral-400">
-                      {project.isFeatured ? "Yes" : "No"}
+                    <td className="px-5 py-4">
+                      {project.isFeatured ? (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-2.5 py-1 text-xs text-amber-400">
+                          <Star className="h-3 w-3" />
+                          Featured
+                        </span>
+                      ) : (
+                        <span className="text-neutral-500">—</span>
+                      )}
                     </td>
 
                     <td className="px-5 py-4">
-                      <div className="flex gap-3">
+                      <div className="flex items-center gap-3">
                         <Link
                           href={`/admin/projects/${project.id}/edit`}
-                          className="text-amber-400 hover:text-amber-300"
+                          className="inline-flex items-center gap-1.5 text-sm text-amber-400 transition hover:text-amber-300"
                         >
+                          <Pencil className="h-3.5 w-3.5" />
                           Edit
                         </Link>
 

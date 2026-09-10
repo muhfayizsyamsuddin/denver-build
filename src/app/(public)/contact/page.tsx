@@ -3,10 +3,13 @@ import {
   Mail,
   MapPin,
   Phone,
-  MessageCircle,
-  ExternalLink,
 } from "lucide-react";
-
+import {
+  FaInstagram,
+  FaFacebookF,
+  FaLinkedinIn,
+  FaWhatsapp
+} from "react-icons/fa";
 import { prisma } from "@/lib/prisma";
 import { ContactForm } from "@/app/components/public/contact-form";
 
@@ -100,7 +103,7 @@ export default async function ContactPage() {
               )}
 
               {company?.address && (
-                <div className="flex items-start gap-4 rounded-xl border border-white/10 bg-neutral-900 p-5">
+                <div className="flex items-start gap-4 rounded-xl border border-white/10 bg-neutral-900 p-5 transition hover:border-amber-500/30">
                   <MapPin className="mt-0.5 h-5 w-5 text-amber-500" />
 
                   <div>
@@ -121,7 +124,7 @@ export default async function ContactPage() {
                   rel="noreferrer"
                   className="flex items-start gap-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5 transition hover:border-emerald-500/40"
                 >
-                  <MessageCircle className="mt-0.5 h-5 w-5 text-emerald-400" />
+                  <FaWhatsapp className="mt-0.5 h-5 w-5 text-emerald-400" />
 
                   <div>
                     <p className="text-xs uppercase tracking-wide text-neutral-500">
@@ -152,7 +155,7 @@ export default async function ContactPage() {
                       aria-label="Instagram"
                       className="rounded-lg border border-white/10 p-3 text-neutral-400 transition hover:border-amber-500/30 hover:text-white"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <FaInstagram className="h-4 w-4" />
                     </a>
                   )}
 
@@ -164,7 +167,7 @@ export default async function ContactPage() {
                       aria-label="Facebook"
                       className="rounded-lg border border-white/10 p-3 text-neutral-400 transition hover:border-amber-500/30 hover:text-white"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <FaFacebookF className="h-4 w-4" />
                     </a>
                   )}
 
@@ -176,7 +179,7 @@ export default async function ContactPage() {
                       aria-label="LinkedIn"
                       className="rounded-lg border border-white/10 p-3 text-neutral-400 transition hover:border-amber-500/30 hover:text-white"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <FaLinkedinIn className="h-4 w-4" />
                     </a>
                   )}
                 </div>

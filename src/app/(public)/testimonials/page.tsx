@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Testimonials",
@@ -37,7 +39,7 @@ export default async function TestimonialsPage() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-7xl px-6 py-20">
+        <div className="mx-auto max-w-7xl px-6 py-22">
           {testimonials.length === 0 ? (
             <div className="rounded-xl border border-white/10 bg-neutral-900 px-6 py-16 text-center">
               <p className="text-neutral-400">
@@ -49,7 +51,7 @@ export default async function TestimonialsPage() {
               {testimonials.map((testimonial) => (
                 <article
                   key={testimonial.id}
-                  className="flex flex-col rounded-xl border border-white/10 bg-neutral-900 p-6"
+                  className="group flex flex-col rounded-xl border border-white/10 bg-neutral-900 p-6 transition hover:border-amber-500/30"
                 >
                   {testimonial.rating && (
                     <p className="text-sm text-amber-400">
@@ -64,25 +66,25 @@ export default async function TestimonialsPage() {
                   <div className="mt-8 border-t border-white/10 pt-5">
                     <div className="flex items-center gap-4">
                       {testimonial.clientPhotoUrl && (
-                        <img
-                          src={testimonial.clientPhotoUrl}
-                          alt={testimonial.clientName}
-                          className="h-12 w-12 rounded-full object-cover"
-                        />
+                        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+                          <Image
+                            src={testimonial.clientPhotoUrl}
+                            alt={testimonial.clientName}
+                            fill
+                            className="object-cover"
+                            sizes="48px"
+                          />
+                        </div>
                       )}
 
                       <div>
-                        <p className="font-medium text-white">
+                        <p className="font-medium text-white transition group-hover:text-amber-400">
                           {testimonial.clientName}
                         </p>
 
-                        {(testimonial.clientRole ||
-                          testimonial.clientCompany) && (
+                        {(testimonial.clientRole || testimonial.clientCompany) && (
                           <p className="mt-1 text-xs text-neutral-500">
-                            {[
-                              testimonial.clientRole,
-                              testimonial.clientCompany,
-                            ]
+                            {[testimonial.clientRole, testimonial.clientCompany]
                               .filter(Boolean)
                               .join(" · ")}
                           </p>
@@ -96,6 +98,28 @@ export default async function TestimonialsPage() {
           )}
         </div>
       </section>
+
+      <div className="mt-16 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-6 py-12 text-center sm:px-10">
+        <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
+          Work With Us
+        </p>
+
+        <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight">
+          Ready to start your own project?
+        </h2>
+
+        <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-neutral-400">
+          Tell us about your construction or renovation needs and we&apos;ll help
+          you discuss the next steps.
+        </p>
+
+        <Link
+          href="/contact"
+          className="mt-7 inline-flex rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
+        >
+          Request a Consultation
+        </Link>
+      </div>
     </main>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
@@ -15,6 +16,15 @@ const links = [
 
 export function PublicNavbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  function isActiveLink(href: string) {
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-neutral-950/90 backdrop-blur">
@@ -28,7 +38,11 @@ export function PublicNavbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-neutral-400 transition hover:text-white"
+              className={`text-sm transition ${
+                isActiveLink(link.href)
+                  ? "font-medium text-amber-400"
+                  : "text-neutral-400 hover:text-white"
+              }`}
             >
               {link.label}
             </Link>
@@ -60,7 +74,11 @@ export function PublicNavbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-3 text-sm text-neutral-300 transition hover:bg-white/5 hover:text-white"
+                className={`rounded-lg px-3 py-3 text-sm transition ${
+                  isActiveLink(link.href)
+                    ? "bg-amber-500/10 font-medium text-amber-400"
+                    : "text-neutral-300 hover:bg-white/5 hover:text-white"
+                }`}
               >
                 {link.label}
               </Link>

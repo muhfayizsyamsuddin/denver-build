@@ -12,8 +12,8 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-  const email = "admin@denverbuild.com";
-  const password = "admin12345";
+  const email = process.env.ADMIN_EMAIL!;
+  const password = process.env.ADMIN_PASSWORD!;
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -21,7 +21,13 @@ async function main() {
     where: {
       email,
     },
-    update: {},
+
+    update: {
+      name: "Denver Build Admin",
+      password: hashedPassword,
+      role: "ADMIN",
+    },
+
     create: {
       name: "Denver Build Admin",
       email,

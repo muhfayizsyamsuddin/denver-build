@@ -64,6 +64,11 @@ export default async function PublicLayout({
         companyName={company?.companyName}
         email={company?.email}
         phone={company?.phone}
+        whatsapp={company?.whatsapp}
+        address={company?.address}
+        instagramUrl={company?.instagramUrl}
+        facebookUrl={company?.facebookUrl}
+        linkedinUrl={company?.linkedinUrl}
       />
     </div>
   );

@@ -84,167 +84,247 @@ export function CompanyProfileForm({ company }: Props) {
       onSubmit={handleSubmit}
       className="space-y-8 rounded-xl border border-white/10 bg-neutral-900 p-6"
     >
-      <section className="grid gap-6 lg:grid-cols-2">
-        <div className="lg:col-span-2">
-          <label className="text-sm text-neutral-300">
-            Company Name
-          </label>
-          <input
-            name="companyName"
-            defaultValue={company?.companyName ?? ""}
-            required
-            className={inputClass}
-          />
-        </div>
-
-        <div className="lg:col-span-2">
-          <label className="text-sm text-neutral-300">
-            Description
-          </label>
-          <textarea
-            name="description"
-            defaultValue={company?.description ?? ""}
-            required
-            rows={4}
-            className={inputClass}
-          />
-        </div>
-
-        <div className="lg:col-span-2">
-          <label className="text-sm text-neutral-300">
-            Company History
-          </label>
-          <textarea
-            name="history"
-            defaultValue={company?.history ?? ""}
-            rows={4}
-            className={inputClass}
-          />
-        </div>
-
+      {/* Company Information */}
+      <section>
         <div>
-          <label className="text-sm text-neutral-300">
-            Vision
-          </label>
-          <textarea
-            name="vision"
-            defaultValue={company?.vision ?? ""}
-            rows={4}
-            className={inputClass}
-          />
+          <h2 className="text-base font-semibold text-white">
+            Company Information
+          </h2>
+
+          <p className="mt-1 text-sm text-neutral-500">
+            Basic information displayed across the public website.
+          </p>
         </div>
 
-        <div>
-          <label className="text-sm text-neutral-300">
-            Mission
-          </label>
-          <textarea
-            name="mission"
-            defaultValue={company?.mission ?? ""}
-            rows={4}
-            className={inputClass}
-          />
-        </div>
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div className="lg:col-span-2">
+            <label className="text-sm text-neutral-300">
+              Company Name
+            </label>
 
-        <div>
-          <label className="text-sm text-neutral-300">
-            Address
-          </label>
-          <input
-            name="address"
-            defaultValue={company?.address ?? ""}
-            required
-            className={inputClass}
-          />
-        </div>
+            <input
+              name="companyName"
+              defaultValue={company?.companyName ?? ""}
+              required
+              className={inputClass}
+            />
+          </div>
 
-        <div>
-          <label className="text-sm text-neutral-300">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            defaultValue={company?.email ?? ""}
-            required
-            className={inputClass}
-          />
-        </div>
+          <div className="lg:col-span-2">
+            <label className="text-sm text-neutral-300">
+              Description
+            </label>
 
-        <div>
-          <label className="text-sm text-neutral-300">
-            Phone
-          </label>
-          <input
-            name="phone"
-            defaultValue={company?.phone ?? ""}
-            required
-            className={inputClass}
-          />
-        </div>
+            <textarea
+              name="description"
+              defaultValue={company?.description ?? ""}
+              required
+              rows={4}
+              className={inputClass}
+            />
+          </div>
 
-        <div>
-          <label className="text-sm text-neutral-300">
-            WhatsApp
-          </label>
-          <input
-            name="whatsapp"
-            defaultValue={company?.whatsapp ?? ""}
-            required
-            className={inputClass}
-          />
-        </div>
+          <div className="lg:col-span-2">
+            <label className="text-sm text-neutral-300">
+              Company History
+            </label>
 
-        <div className="lg:col-span-2">
-          <label className="text-sm text-neutral-300">
-            Google Maps URL
-          </label>
-          <input
-            name="googleMapsUrl"
-            defaultValue={company?.googleMapsUrl ?? ""}
-            className={inputClass}
-          />
-        </div>
-
-        <div>
-          <label className="text-sm text-neutral-300">
-            Instagram URL
-          </label>
-          <input
-            name="instagramUrl"
-            defaultValue={company?.instagramUrl ?? ""}
-            className={inputClass}
-          />
-        </div>
-
-        <div>
-          <label className="text-sm text-neutral-300">
-            Facebook URL
-          </label>
-          <input
-            name="facebookUrl"
-            defaultValue={company?.facebookUrl ?? ""}
-            className={inputClass}
-          />
-        </div>
-
-        <div className="lg:col-span-2">
-          <label className="text-sm text-neutral-300">
-            LinkedIn URL
-          </label>
-          <input
-            name="linkedinUrl"
-            defaultValue={company?.linkedinUrl ?? ""}
-            className={inputClass}
-          />
+            <textarea
+              name="history"
+              defaultValue={company?.history ?? ""}
+              rows={4}
+              className={inputClass}
+            />
+          </div>
         </div>
       </section>
 
-      <div className="flex justify-end">
+      {/* Vision & Mission */}
+      <section className="border-t border-white/10 pt-8">
+        <div>
+          <h2 className="text-base font-semibold text-white">
+            Vision & Mission
+          </h2>
+
+          <p className="mt-1 text-sm text-neutral-500">
+            Define the direction and purpose of the company.
+          </p>
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div>
+            <label className="text-sm text-neutral-300">
+              Vision
+            </label>
+
+            <textarea
+              name="vision"
+              defaultValue={company?.vision ?? ""}
+              rows={5}
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-neutral-300">
+              Mission
+            </label>
+
+            <textarea
+              name="mission"
+              defaultValue={company?.mission ?? ""}
+              rows={5}
+              className={inputClass}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Information */}
+      <section className="border-t border-white/10 pt-8">
+        <div>
+          <h2 className="text-base font-semibold text-white">
+            Contact Information
+          </h2>
+
+          <p className="mt-1 text-sm text-neutral-500">
+            Contact details displayed on the public website.
+          </p>
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div className="lg:col-span-2">
+            <label className="text-sm text-neutral-300">
+              Address
+            </label>
+
+            <input
+              name="address"
+              defaultValue={company?.address ?? ""}
+              required
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-neutral-300">
+              Email
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              defaultValue={company?.email ?? ""}
+              required
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-neutral-300">
+              Phone
+            </label>
+
+            <input
+              name="phone"
+              defaultValue={company?.phone ?? ""}
+              required
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-neutral-300">
+              WhatsApp
+            </label>
+
+            <input
+              name="whatsapp"
+              defaultValue={company?.whatsapp ?? ""}
+              required
+              className={inputClass}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Links */}
+      <section className="border-t border-white/10 pt-8">
+        <div>
+          <h2 className="text-base font-semibold text-white">
+            Social & Location Links
+          </h2>
+
+          <p className="mt-1 text-sm text-neutral-500">
+            External links used for maps and company social media.
+          </p>
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div className="lg:col-span-2">
+            <label className="text-sm text-neutral-300">
+              Google Maps URL
+            </label>
+
+            <input
+              type="url"
+              name="googleMapsUrl"
+              defaultValue={company?.googleMapsUrl ?? ""}
+              placeholder="https://maps.google.com/..."
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-neutral-300">
+              Instagram URL
+            </label>
+
+            <input
+              type="url"
+              name="instagramUrl"
+              defaultValue={company?.instagramUrl ?? ""}
+              placeholder="https://instagram.com/..."
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-neutral-300">
+              Facebook URL
+            </label>
+
+            <input
+              type="url"
+              name="facebookUrl"
+              defaultValue={company?.facebookUrl ?? ""}
+              placeholder="https://facebook.com/..."
+              className={inputClass}
+            />
+          </div>
+
+          <div className="lg:col-span-2">
+            <label className="text-sm text-neutral-300">
+              LinkedIn URL
+            </label>
+
+            <input
+              type="url"
+              name="linkedinUrl"
+              defaultValue={company?.linkedinUrl ?? ""}
+              placeholder="https://linkedin.com/company/..."
+              className={inputClass}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Save */}
+      <div className="flex justify-end border-t border-white/10 pt-6">
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400 disabled:opacity-60"
+          className="rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? "Saving..." : "Save Changes"}
         </button>

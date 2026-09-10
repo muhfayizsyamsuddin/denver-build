@@ -17,15 +17,15 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
-      <div className="flex">
-        <AdminSidebar />
+    <div className="min-h-screen bg-neutral-950 text-white lg:flex">
+      <AdminSidebar />
 
-        <div className="min-w-0 flex-1">
-          <AdminTopbar name={session.user.name} />
+      <div className="min-w-0 flex-1">
+        <AdminTopbar name={session.user?.name} />
 
-          <main className="p-6">{children}</main>
-        </div>
+        <main className="p-4 sm:p-6">
+          {children}
+        </main>
       </div>
     </div>
   );

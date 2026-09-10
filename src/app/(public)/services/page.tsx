@@ -28,7 +28,7 @@ export default async function ServicesPage() {
   return (
     <main className="bg-neutral-950 text-white">
       <section className="border-b border-white/10">
-        <div className="mx-auto max-w-7xl px-6 py-20">
+        <div className="mx-auto max-w-7xl px-6 py-10">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
             Services
           </p>
@@ -45,7 +45,7 @@ export default async function ServicesPage() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-7xl px-6 py-20">
+        <div className="mx-auto max-w-7xl px-6 py-10">
           {services.length === 0 ? (
             <div className="rounded-xl border border-white/10 bg-neutral-900 px-6 py-16 text-center">
               <p className="text-neutral-400">
@@ -68,7 +68,7 @@ export default async function ServicesPage() {
                       <img
                         src={service.imageUrl}
                         alt={service.name}
-                        className="aspect-[16/10] w-full object-cover"
+                        className="aspect-16/10 w-full object-cover"
                       />
                     )}
 
@@ -90,33 +90,53 @@ export default async function ServicesPage() {
                       <p className="mt-4 text-sm leading-7 text-neutral-400">
                         {service.description}
                       </p>
+                      <Link
+                        href="/contact"
+                        className="mt-5 inline-flex text-sm font-medium text-amber-400 transition hover:text-amber-300"
+                      >
+                        Discuss this service →
+                      </Link>
                     </div>
                   </article>
                 );
               })}
             </div>
           )}
-
-          <div className="mt-16 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-6 py-12 text-center">
+        </div>
+      </section>
+        
+      {/* CTA */}
+      <section>
+        <div className="mx-auto max-w-7xl px-6 py-20">
+          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 px-6 py-14 text-center sm:px-10">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
-              Need Something Specific?
+              Start Your Project
             </p>
 
-            <h2 className="mt-4 text-3xl font-semibold">
-              Discuss your project with our team.
+            <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
+              Ready to discuss your construction project?
             </h2>
 
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-neutral-400">
-              Tell us about your project requirements and we can discuss the
-              most suitable approach.
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-neutral-400">
+              Tell us about your project requirements, location, and expected scope.
+              Our team will review your inquiry and help you discuss the next steps.
             </p>
 
-            <Link
-              href="/contact"
-              className="mt-7 inline-flex rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
-            >
-              Start a Consultation
-            </Link>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
+              >
+                Request a Consultation
+              </Link>
+
+              <Link
+                href="/projects"
+                className="inline-flex rounded-lg border border-white/10 px-5 py-3 text-sm font-medium text-neutral-200 transition hover:bg-white/5"
+              >
+                View Our Projects
+              </Link>
+            </div>
           </div>
         </div>
       </section>

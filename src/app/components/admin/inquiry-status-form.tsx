@@ -11,7 +11,9 @@ type Props = {
 
 export function InquiryStatusForm({ id, status }: Props) {
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState(status);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -19,15 +21,13 @@ export function InquiryStatusForm({ id, status }: Props) {
     setLoading(true);
 
     try {
-      const formData = new FormData(event.currentTarget);
-
       const response = await fetch(`/api/admin/inquiries/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          status: formData.get("status"),
+          status: currentStatus,
         }),
       });
 
@@ -50,7 +50,7 @@ export function InquiryStatusForm({ id, status }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-fit rounded-xl border border-white/10 bg-neutral-900 p-6"
+      className="rounded-xl border border-white/10 bg-neutral-900 p-6"
     >
       <h2 className="font-semibold text-white">
         Inquiry Status
@@ -60,27 +60,40 @@ export function InquiryStatusForm({ id, status }: Props) {
         Update the progress of this customer inquiry.
       </p>
 
-      <label className="mt-6 block text-sm text-neutral-300">
-        Status
-      </label>
+      <div className="mt-6">
+        <label className="text-sm text-neutral-300">
+          Status
+        </label>
 
-      <select
-        name="status"
-        defaultValue={status}
-        className="mt-2 w-full rounded-lg border border-white/10 bg-neutral-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-500"
-      >
-        <option value="NEW">New</option>
-        <option value="CONTACTED">Contacted</option>
-        <option value="CLOSED">Closed</option>
-      </select>
+        <select
+          name="status"
+          value={currentStatus}
+          onChange={(event) =>
+            setCurrentStatus(
+              event.target.value as "NEW" | "CONTACTED" | "CLOSED",
+            )
+          }
+          className="mt-2 w-full rounded-lg border border-white/10 bg-neutral-950 px-4 py-3 text-sm text-white outline-none transition focus:border-amber-500"
+        >
+          <option value="NEW">New</option>
+          <option value="CONTACTED">Contacted</option>
+          <option value="CLOSED">Closed</option>
+        </select>
+      </div>
 
       <button
         type="submit"
-        disabled={loading}
-        className="mt-5 w-full rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400 disabled:opacity-60"
+        disabled={loading || currentStatus === status}
+        className="mt-5 w-full rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {loading ? "Updating..." : "Update Status"}
       </button>
+
+      {currentStatus === status && (
+        <p className="mt-3 text-center text-xs text-neutral-600">
+          No status changes.
+        </p>
+      )}
     </form>
   );
 }

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
@@ -111,11 +112,16 @@ export default async function ProjectDetailPage({ params }: Props) {
       {project.thumbnailUrl && (
         <section className="border-b border-white/10">
           <div className="mx-auto max-w-7xl px-6 py-12">
-            <img
-              src={project.thumbnailUrl}
-              alt={project.title}
-              className="aspect-video w-full rounded-xl object-cover"
-            />
+            <div className="relative aspect-video overflow-hidden rounded-xl">
+              <Image
+                src={project.thumbnailUrl}
+                alt={project.title}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 1280px) 100vw, 1280px"
+              />
+            </div>
           </div>
         </section>
       )}
@@ -145,12 +151,18 @@ export default async function ProjectDetailPage({ params }: Props) {
 
             <div className="mt-8 grid gap-5 md:grid-cols-2">
               {project.images.map((image) => (
-                <img
+                <div
                   key={image.id}
-                  src={image.imageUrl}
-                  alt={image.altText ?? project.title}
-                  className="aspect-4/3 w-full rounded-xl object-cover"
-                />
+                  className="relative aspect-4/3 overflow-hidden rounded-xl"
+                >
+                  <Image
+                    src={image.imageUrl}
+                    alt={image.altText ?? project.title}
+                    fill
+                    className="object-cover transition duration-500 hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -159,20 +171,25 @@ export default async function ProjectDetailPage({ params }: Props) {
 
       <section>
         <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 px-6 py-12 text-center">
+          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 px-6 py-14 text-center sm:px-10">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
               Start Your Project
             </p>
 
-            <h2 className="mt-4 text-3xl font-semibold">
-              Looking for something similar?
+            <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight">
+              Inspired by this project?
             </h2>
+
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-neutral-400">
+              Tell us what you want to build and we&apos;ll help you discuss the
+              next steps.
+            </p>
 
             <Link
               href="/contact"
               className="mt-7 inline-flex rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
             >
-              Discuss Your Project
+              Request a Consultation
             </Link>
           </div>
         </div>

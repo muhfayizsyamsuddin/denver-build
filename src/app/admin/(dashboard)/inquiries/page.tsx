@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Eye, Inbox } from "lucide-react";
 
 import { prisma } from "@/lib/prisma";
 
@@ -25,6 +26,19 @@ export default async function InquiriesPage({ searchParams }: Props) {
     },
   });
 
+  function getStatusClass(status: "NEW" | "CONTACTED" | "CLOSED") {
+    switch (status) {
+      case "NEW":
+        return "bg-amber-500/10 text-amber-400";
+
+      case "CONTACTED":
+        return "bg-blue-500/10 text-blue-400";
+
+      case "CLOSED":
+        return "bg-emerald-500/10 text-emerald-400";
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -37,6 +51,7 @@ export default async function InquiriesPage({ searchParams }: Props) {
         </p>
       </div>
 
+      {/* Filters */}
       <div className="flex flex-wrap gap-2">
         {[
           { label: "All", value: "" },
@@ -55,10 +70,10 @@ export default async function InquiriesPage({ searchParams }: Props) {
             <Link
               key={item.label}
               href={href}
-              className={`rounded-lg px-4 py-2 text-sm transition ${
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                 active
-                  ? "bg-amber-500 font-medium text-neutral-950"
-                  : "border border-white/10 text-neutral-400 hover:bg-white/5 hover:text-white"
+                  ? "bg-amber-500 text-neutral-950"
+                  : "border border-white/10 bg-neutral-900 text-neutral-400 hover:bg-white/5 hover:text-white"
               }`}
             >
               {item.label}
@@ -67,21 +82,45 @@ export default async function InquiriesPage({ searchParams }: Props) {
         })}
       </div>
 
+      {/* Table */}
       <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
         {inquiries.length === 0 ? (
-          <div className="px-6 py-12 text-center text-sm text-neutral-500">
-            No inquiries found.
+          <div className="px-6 py-14 text-center">
+            <Inbox className="mx-auto h-8 w-8 text-neutral-700" />
+
+            <p className="mt-4 text-sm font-medium text-neutral-300">
+              No inquiries found
+            </p>
+
+            <p className="mt-1 text-sm text-neutral-500">
+              Customer inquiries submitted through the website will appear
+              here.
+            </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-white/10 text-neutral-500">
+              <thead className="border-b border-white/10 bg-white/2 text-neutral-500">
                 <tr>
-                  <th className="px-5 py-3 font-medium">Name</th>
-                  <th className="px-5 py-3 font-medium">Subject</th>
-                  <th className="px-5 py-3 font-medium">Status</th>
-                  <th className="px-5 py-3 font-medium">Date</th>
-                  <th className="px-5 py-3 font-medium">Action</th>
+                  <th className="px-5 py-3 font-medium">
+                    Customer
+                  </th>
+
+                  <th className="px-5 py-3 font-medium">
+                    Subject
+                  </th>
+
+                  <th className="px-5 py-3 font-medium">
+                    Status
+                  </th>
+
+                  <th className="px-5 py-3 font-medium">
+                    Date
+                  </th>
+
+                  <th className="px-5 py-3 font-medium">
+                    Action
+                  </th>
                 </tr>
               </thead>
 
@@ -89,12 +128,15 @@ export default async function InquiriesPage({ searchParams }: Props) {
                 {inquiries.map((inquiry) => (
                   <tr
                     key={inquiry.id}
-                    className="border-b border-white/5 last:border-0"
+                    className="border-b border-white/5 transition hover:bg-white/2 last:border-0"
                   >
                     <td className="px-5 py-4">
-                      <p className="font-medium text-neutral-200">
+                      <Link
+                        href={`/admin/inquiries/${inquiry.id}`}
+                        className="font-medium text-neutral-200 transition hover:text-amber-400"
+                      >
                         {inquiry.name}
-                      </p>
+                      </Link>
 
                       <p className="mt-1 text-xs text-neutral-500">
                         {inquiry.email}
@@ -106,7 +148,11 @@ export default async function InquiriesPage({ searchParams }: Props) {
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className="rounded-full bg-white/5 px-2.5 py-1 text-xs text-neutral-300">
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-medium ${getStatusClass(
+                          inquiry.status,
+                        )}`}
+                      >
                         {inquiry.status}
                       </span>
                     </td>
@@ -118,8 +164,9 @@ export default async function InquiriesPage({ searchParams }: Props) {
                     <td className="px-5 py-4">
                       <Link
                         href={`/admin/inquiries/${inquiry.id}`}
-                        className="text-amber-400 hover:text-amber-300"
+                        className="inline-flex items-center gap-1.5 text-sm text-amber-400 transition hover:text-amber-300"
                       >
+                        <Eye className="h-3.5 w-3.5" />
                         View
                       </Link>
                     </td>
