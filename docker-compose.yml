@@ -1,0 +1,46 @@
+services:
+  app:
+    image: faizms14/denver-build:v1.0
+    env_file:
+      - .env
+
+    depends_on:
+      - database
+
+    networks:
+      - proxy_net
+      - denver-build-net
+
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy_net
+      traefik.http.routers.denverbuild.rule: Host(`denverbuild.faizms.com`)
+      traefik.http.routers.denverbuild.entrypoints: websecure
+      traefik.http.routers.denverbuild.tls.certresolver: myresolver
+      traefik.http.services.denverbuild.loadbalancer.server.port: 3000
+
+  database:
+    image: postgres:17-alpine
+    container_name: denver-build-db
+    restart: unless-stopped
+
+    networks:
+      - denver-build-net
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+    volumes:
+      - denver-build-db-data:/var/lib/postgresql/data
+
+networks:
+  denver-build-net:
+    driver: bridge
+
+  proxy_net:
+    external: true
+
+volumes:
+  denver-build-db-data:
