@@ -11,6 +11,13 @@
 ├── Testimonials
 └── Contact
 
+SEO endpoints:
+
+- /sitemap.xml
+- /robots.txt
+
+---
+
 ## 2. Admin CMS
 
 /admin
@@ -34,6 +41,8 @@
 │   └── Detail
 └── Settings
 
+---
+
 ## 3. Public Routes
 
 | Route | Page | Access |
@@ -45,6 +54,10 @@
 | `/projects/[slug]` | Project Detail | Public |
 | `/testimonials` | Testimonials | Public |
 | `/contact` | Contact | Public |
+| `/sitemap.xml` | Search Engine Sitemap | Public |
+| `/robots.txt` | Search Engine Crawling Rules | Public |
+
+---
 
 ## 4. Admin Routes
 
@@ -66,6 +79,8 @@
 | `/admin/inquiries/[id]` | Inquiry Detail | Admin |
 | `/admin/settings` | Settings | Admin |
 
+---
+
 ## 5. Navigation
 
 ### Public Navigation
@@ -76,6 +91,7 @@
 - Projects
 - Testimonials
 - Contact
+- Get a Quote CTA
 - WhatsApp CTA
 
 ### Admin Navigation
@@ -87,11 +103,18 @@
 - Testimonials
 - Inquiries
 - Settings
+- View Website
 - Logout
+
+---
 
 ## 6. Notes
 
 - Public project detail pages use SEO-friendly slugs.
-- Admin routes must be protected by authentication.
-- Public navigation should be responsive on mobile devices.
-- The WhatsApp CTA should remain easily accessible from public pages.
+- Project detail pages are generated dynamically from database content.
+- Public CMS pages are server-rendered dynamically so content updates can appear without rebuilding the application.
+- Admin routes are protected by authentication and ADMIN authorization.
+- Public navigation is responsive across desktop, tablet, and mobile devices.
+- The WhatsApp CTA provides direct contact access using the company WhatsApp number.
+- `/sitemap.xml` contains public pages and published project detail URLs.
+- `/robots.txt` allows public crawling while excluding admin and API routes.

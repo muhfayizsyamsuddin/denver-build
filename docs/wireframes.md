@@ -46,10 +46,6 @@ The wireframes focus on content hierarchy, navigation, and component placement. 
 │                                               │
 │ Experience | Quality | Reliable | Professional│
 ├───────────────────────────────────────────────┤
-│ Company Statistics                            │
-│                                               │
-│ 50+ Projects | 10+ Years | 40+ Clients        │
-├───────────────────────────────────────────────┤
 │ Featured Projects                             │
 │                                               │
 │ [Project Card] [Project Card] [Project Card]  │
@@ -78,7 +74,7 @@ The wireframes focus on content hierarchy, navigation, and component placement. 
 │ Navbar                                        │
 ├───────────────────────────────────────────────┤
 │ Page Hero                                     │
-│ About Arunika Build                           │
+│ About Denver Build                            │
 ├───────────────────────────────────────────────┤
 │ Company Overview                              │
 │                                               │
@@ -247,7 +243,7 @@ Project card:
 ```text
 ┌───────────────────────────────────────────────┐
 │                                               │
-│              Arunika Build CMS                │
+│              Denver Build CMS                │
 │                                               │
 │          ┌─────────────────────┐              │
 │          │ Email               │              │
@@ -423,6 +419,32 @@ Facebook URL
 LinkedIn URL
 
 [Save Changes]
+```
+
+## 3.9 Site Settings
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ Settings                                                   │
+│ Manage global website and SEO configuration.               │
+│                                                            │
+│ General                                                    │
+│ Site Title                                                 │
+│ Site Description                                           │
+│                                                            │
+├────────────────────────────────────────────────────────────┤
+│ SEO                                                        │
+│ Default Meta Title                                         │
+│ Default Meta Description                                   │
+│ Open Graph Image                                           │
+│ Favicon                                                    │
+│                                                            │
+├────────────────────────────────────────────────────────────┤
+│ WhatsApp                                                   │
+│ Default WhatsApp Message                                   │
+│                                                            │
+│                                            [Save Settings] │
+└────────────────────────────────────────────────────────────┘
 ```
 
 # 4. Responsive Considerations

@@ -4,12 +4,12 @@
 
 Denver Build has two main user flows:
 
-- Public visitor flow
-- Administrator CMS flow
+- Public visitor flow.
+- Administrator CMS flow.
 
-The public website focuses on helping visitors understand the company, explore services and projects, and contact the business.
+The public website focuses on helping visitors understand the company, explore services and projects, review testimonials, and contact the business.
 
-The administrator flow focuses on managing website content through the CMS.
+The administrator flow focuses on securely managing website content through the CMS.
 
 ---
 
@@ -37,7 +37,6 @@ Visitors may also access WhatsApp directly from public pages.
 
 ## 3. Home Page Flow
 
-```text
 Home
   ↓
 Hero Section
@@ -46,16 +45,15 @@ Company Introduction
   ↓
 Services Overview
   ↓
-Featured Projects
-  ↓
 Why Choose Us
+  ↓
+Featured Projects
   ↓
 Testimonials
   ↓
 Consultation CTA
   ↓
 Contact / WhatsApp
-```
 
 The main objective of the Home page is to guide visitors toward:
 
@@ -65,23 +63,21 @@ The main objective of the Home page is to guide visitors toward:
 - Starting a WhatsApp conversation.
 
 ## 4. Services Flow
-
-```text
 Home / Navigation
         ↓
      Services
         ↓
 Browse Services
         ↓
-Select Relevant Service
+Choose Relevant Service
         ↓
-Contact / WhatsApp CTA
-```
+Contact / Consultation / WhatsApp
+
 Visitors do not need an account to access service information.
 
-## 5. Projects Flow
+Services are presented as informational content and do not require separate service detail pages in version 1.0.
 
-```text
+## 5. Projects Flow
 Home / Navigation
         ↓
      Projects
@@ -97,12 +93,13 @@ View Description
 View Gallery
         ↓
 Contact / Consultation CTA
-```
-Projects should help build trust by showing completed work.
+
+Projects help build trust by presenting completed work, project details, and gallery images.
+
+Only published projects are displayed publicly.
 
 ## 6. Contact Inquiry Flow
 
-```text
 Visitor
    ↓
 Contact Page
@@ -122,19 +119,20 @@ Show Errors     Save Inquiry
               Status = NEW
                   ↓
           Show Success Message
-```
+
 Required fields:
 
-- Name
-- Email
-- Subject
-- Message
+- Name.
+- Email.
+- Subject.
+- Message.
 
 Phone number may be optional.
 
+Submitted inquiries are stored in PostgreSQL.
+
 ## 7. WhatsApp Flow
 
-```text
 Visitor
    ↓
 Click WhatsApp CTA
@@ -144,14 +142,13 @@ Open WhatsApp
 Pre-filled Message
    ↓
 Visitor Sends Message
-```
-No inquiry record is required for direct WhatsApp communication in MVP.
+
+Direct WhatsApp communication does not create an Inquiry record.
 
 ## 8. Administrator Flow
 
 ### 8.1 Admin Authentication
 
-```text
 Admin
   ↓
 /admin/login
@@ -160,19 +157,20 @@ Enter Credentials
   ↓
 Validate Credentials
   ↓
-Valid?
+Verify Password
+  ↓
+Valid ADMIN?
  ┌───────┴───────┐
 No              Yes
 ↓                 ↓
-Show Error      Create Session
+Show Error      Create JWT Session
                   ↓
               Dashboard
-```
-Authenticated administrators should not need to log in again while their session remains valid.
+
+Authenticated administrators do not need to log in again while their session remains valid.
 
 ### 8.2 Protected Route Flow
 
-```text
 Admin Requests Protected Route
             ↓
       Check Session
@@ -181,13 +179,20 @@ Admin Requests Protected Route
        ┌─────┴─────┐
       No          Yes
       ↓             ↓
-Redirect Login   Allow Access
-```
-All /admin routes except /admin/login must be protected.
+Redirect Login   Check ADMIN Role
+                      ↓
+                  Authorized?
+                 ┌────┴────┐
+                No         Yes
+                ↓           ↓
+             Deny Access  Allow Access
+
+All /admin routes except /admin/login are protected.
+
+Admin API endpoints also require authenticated ADMIN access.
 
 ## 9. Admin Dashboard Flow
 
-```text
 Login
   ↓
 Dashboard
@@ -196,9 +201,10 @@ Dashboard
   ├── Projects
   ├── Testimonials
   ├── Inquiries
-  └── Settings
-```
-Dashboard summary should provide quick access to:
+  ├── Settings
+  └── View Website
+
+Dashboard summary provides quick access to:
 
 - Total projects.
 - Total services.
@@ -211,54 +217,52 @@ Dashboard summary should provide quick access to:
 
 ### 10.1 Create Service
 
-```text
 Services
    ↓
 Add Service
    ↓
 Fill Form
    ↓
+Upload Image (optional)
+   ↓
 Validate
    ↓
 Save Service
    ↓
 Return to Service List
-```
 
 ### 10.2 Edit Service
 
-```text
 Services
    ↓
 Select Service
    ↓
 Edit
    ↓
-Update Form
+Update Information
+   ↓
+Replace Image if Needed
    ↓
 Validate
    ↓
 Save Changes
-```
 
 ### 10.3 Delete Service
 
-```text
 Services
    ↓
 Select Delete
    ↓
 Confirmation
    ↓
-Delete Service
-```
-Deletion must require confirmation.
+Delete Service Record
+
+Deletion requires confirmation.
 
 ## 11. Project Management Flow
 
 ### 11.1 Create Project
 
-```text
 Projects
    ↓
 Add Project
@@ -274,11 +278,9 @@ Validate
 Save Project
    ↓
 Publish / Keep Draft
-```
 
 ### 11.2 Edit Project
 
-```text
 Projects
    ↓
 Select Project
@@ -287,14 +289,14 @@ Edit
    ↓
 Update Information
    ↓
-Manage Images
+Manage Thumbnail
+   ↓
+Manage Gallery Images
    ↓
 Save Changes
-```
 
 ### 11.3 Delete Project
 
-```text
 Projects
    ↓
 Delete
@@ -303,25 +305,32 @@ Confirmation
    ↓
 Delete Project
    ↓
-Delete Related Media if Required
-```
+Delete Related ProjectImage Records
+
+Deleting a Project removes its related ProjectImage database records.
+
+Cloudinary assets are managed separately from database deletion.
 
 ## 12. Testimonial Management Flow
 
-```text
 Testimonials
      ↓
 Create / Edit / Delete
      ↓
+Upload Client Photo (optional)
+     ↓
+Set Rating
+     ↓
+Set Active Status
+     ↓
 Validate Data
      ↓
 Save Changes
-```
-Administrator may also activate or deactivate testimonials.
+
+Only active testimonials are displayed publicly.
 
 ## 13. Inquiry Management Flow
 
-```text
 Visitor Submits Contact Form
             ↓
        Inquiry Created
@@ -339,21 +348,19 @@ Status = CONTACTED
 Issue Completed
             ↓
 Status = CLOSED
-```
-Inquiry status transitions:
 
-```text
+Inquiry status progression:
+
 NEW
  ↓
 CONTACTED
  ↓
 CLOSED
-```
-For MVP, reopening or advanced workflow rules are not required.
+
+Advanced workflow rules or reopening are not required for version 1.0.
 
 ## 14. Company Profile Management Flow
 
-```text
 Dashboard
    ↓
 Company Profile
@@ -364,12 +371,15 @@ Validate
    ↓
 Save
    ↓
-Public Website Uses Updated Data
-```
+Database Updated
+   ↓
+Public Website Displays Updated Content
+
 Managed information includes:
 
 - Company name.
 - Description.
+- History.
 - Vision.
 - Mission.
 - Address.
@@ -379,9 +389,61 @@ Managed information includes:
 - Google Maps URL.
 - Social media links.
 
-## 15. Logout Flow
+## 15. Site Settings Flow
 
-```text
+Dashboard
+   ↓
+Settings
+   ↓
+Update General Settings
+   ↓
+Update SEO Metadata
+   ↓
+Upload OG Image / Favicon
+   ↓
+Update WhatsApp Message
+   ↓
+Validate
+   ↓
+Save Settings
+   ↓
+Public Website Uses Updated Configuration
+
+Managed settings include:
+
+- Site title.
+- Site description.
+- Default meta title.
+- Default meta description.
+- Default Open Graph image.
+- Favicon.
+- Default WhatsApp message.
+
+## 16. Media Upload Flow
+
+Admin Selects Image
+        ↓
+Validate File Type / Size
+        ↓
+Upload to Cloudinary
+        ↓
+Receive Image URL
+        ↓
+Store URL in CMS Form / Database
+        ↓
+Display Image on Public Website
+
+Media uploads are used for:
+
+- Services.
+- Project thumbnails.
+- Project galleries.
+- Testimonial photos.
+- Open Graph images.
+- Favicon.
+
+## 17. Logout Flow
+
 Admin
   ↓
 Logout
@@ -389,13 +451,15 @@ Logout
 Destroy Session
   ↓
 Redirect to /admin/login
-```
 
-## 16. MVP Flow Principles
+## 18. Version 1.0 Flow Principles
 
 - Public users do not require accounts.
-- CMS access is restricted to administrators.
-- Content changes should be reflected on the public website.
+- CMS access is restricted to authenticated administrators.
+- Admin API access requires ADMIN authorization.
+- Public content is retrieved dynamically from the database.
+- Content changes can appear without rebuilding the application.
 - Destructive admin actions require confirmation.
-- Forms require server-side validation.
-- Visitor contact actions should remain simple and fast.
+- Forms use server-side validation.
+- Uploaded media is validated before storage.
+- Visitor contact actions remain simple and fast.

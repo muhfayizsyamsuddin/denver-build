@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-The Denver Build MVP uses a relational database to manage administrators, company information, services, projects, project images, testimonials, and visitor inquiries.
+The Denver Build application uses a relational database to manage administrators, company information, services, projects, project images, testimonials, visitor inquiries, and global website settings.
 
 Database:
 
@@ -56,7 +56,7 @@ Fields:
 - createdAt
 - updatedAt
 
-For MVP, only one CompanyProfile record is expected.
+Only one CompanyProfile record is expected.
 
 ---
 
@@ -138,7 +138,7 @@ Fields:
 
 ### Inquiry
 
-Stores messages submitted through the contact form.
+Stores messages submitted through the public contact form.
 
 Fields:
 
@@ -157,6 +157,27 @@ Inquiry statuses:
 - NEW
 - CONTACTED
 - CLOSED
+
+---
+
+### SiteSettings
+
+Stores global website and SEO configuration.
+
+Fields:
+
+- id
+- siteTitle
+- siteDescription
+- defaultMetaTitle
+- defaultMetaDescription
+- defaultOgImageUrl
+- faviconUrl
+- whatsappMessage
+- createdAt
+- updatedAt
+
+Only one SiteSettings record is expected.
 
 ---
 
@@ -179,12 +200,13 @@ Relationship:
 Project 1 ───── * ProjectImage
 
 A ProjectImage belongs to exactly one Project.
-Deleting a project should also remove its associated ProjectImage database records.
-Cloudinary asset deletion should be handled by application logic.
+
+Deleting a Project also removes its associated ProjectImage database records through cascade behavior.
+
+Cloudinary assets are managed separately from database records.
 
 ## 4. Entity Relationship Diagram
 
-```text
 ┌──────────────────────┐
 │        User          │
 ├──────────────────────┤
@@ -298,66 +320,100 @@ Cloudinary asset deletion should be handled by application logic.
 │ createdAt            │
 │ updatedAt            │
 └──────────────────────┘
-```
+
+
+┌──────────────────────┐
+│    SiteSettings      │
+├──────────────────────┤
+│ id                   │
+│ siteTitle            │
+│ siteDescription      │
+│ defaultMetaTitle     │
+│ defaultMetaDescription│
+│ defaultOgImageUrl    │
+│ faviconUrl           │
+│ whatsappMessage      │
+│ createdAt            │
+│ updatedAt            │
+└──────────────────────┘
 
 ## 5. Constraints
 
-### 5.1 User
+### User
 
 - email must be unique.
 - role defaults to ADMIN.
 
-### 5.2 Service
+### CompanyProfile
+
+- Only one CompanyProfile record is expected in the application.
+
+### Service
 
 - slug must be unique.
-- displayOrder should default to 0.
-- isActive should default to true.
+- displayOrder defaults to 0.
+- isActive defaults to true.
+- imageUrl may be nullable.
+- icon may be nullable.
 
-### 5.3 Project
+### Project
 
 - slug must be unique.
-- isFeatured should default to false.
-- isPublished should default to false.
+- isFeatured defaults to false.
+- isPublished defaults to false.
+- thumbnailUrl may be nullable.
 
-### 5.4 ProjectImage
+### ProjectImage
 
 - projectId is required.
-- images are deleted from the database when their parent Project is deleted.
+- A ProjectImage belongs to one Project.
+- ProjectImage records are removed when their parent Project is deleted.
 
-### 5.5 Testimonial
+### Testimonial
 
+- clientRole may be nullable.
+- clientCompany may be nullable.
+- clientPhotoUrl may be nullable.
 - rating may be nullable.
-- rating should be between 1 and 5 when provided.
-- isActive should default to true.
+- rating must be between 1 and 5 when provided.
+- isActive defaults to true.
 
-### 5.6 Inquiry
+### Inquiry
 
 - status defaults to NEW.
 - email is required.
 - phone may be nullable.
 
-## 6. Suggested Enums
+### SiteSettings
 
-### 6.1 UserRole
+- Only one SiteSettings record is expected.
+- defaultOgImageUrl may be nullable.
+- faviconUrl may be nullable.
+- whatsappMessage may be nullable.
+
+## 6. Enums
+
+### UserRole
 
 ADMIN
 
-### 6.2 InquiryStatus
+### InquiryStatus
 
 NEW
 CONTACTED
 CLOSED
 
-## 7. MVP Notes
+## 7. Design Notes
 
-The MVP deliberately avoids unnecessary relationships.
+The database intentionally avoids unnecessary relationships.
 
-For example:
+Examples:
 
-- Services do not require categories.
-- Testimonials are not linked to projects.
-- Inquiries are not linked to user accounts.
-- CompanyProfile is treated as singleton content.
-- Projects use a simple string category instead of a separate category table.
+Services do not require categories.
+Testimonials are not linked directly to projects.
+Inquiries are not linked to user accounts.
+CompanyProfile is treated as singleton content.
+SiteSettings is treated as singleton configuration.
+Projects use a string category instead of a separate category table.
 
-These decisions keep the first version simple while still allowing future expansion.
+These decisions keep the application simple while preserving room for future expansion.
