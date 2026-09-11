@@ -66,7 +66,6 @@ The home page should contain:
 - Services overview.
 - Why Choose Us section.
 - Featured projects.
-- Company statistics.
 - Testimonials.
 - Consultation CTA.
 - Contact information.
@@ -82,7 +81,6 @@ The About page should display:
 - Vision.
 - Mission.
 - Company values.
-- Business experience or achievements.
 
 ---
 
@@ -278,8 +276,8 @@ The application should support:
 
 - Image upload.
 - Image replacement.
-- Image deletion where required.
-- Optimized images for web display.
+- Image removal from managed website content.
+- Media validation.
 
 ---
 
@@ -358,6 +356,7 @@ The CMS should also remain usable on tablets and mobile devices.
 
 - Tailwind CSS
 - shadcn/ui
+- Lucide React
 
 ### Database
 
@@ -370,7 +369,10 @@ The CMS should also remain usable on tablets and mobile devices.
 
 ### Authentication
 
-- Auth.js
+- NextAuth.js
+- Credentials Provider
+- JWT session strategy
+- bcryptjs
 
 ### Media Storage
 
@@ -379,12 +381,17 @@ The CMS should also remain usable on tablets and mobile devices.
 ### Deployment
 
 - Docker
+- Docker Compose
+- GitHub Actions
+- Docker Hub
+- Traefik
+- VPS
 
 ---
 
 ## 11. Core Data Entities
 
-The MVP will use the following entities:
+The MVP uses the following entities:
 
 - User
 - CompanyProfile
@@ -393,6 +400,7 @@ The MVP will use the following entities:
 - ProjectImage
 - Testimonial
 - Inquiry
+- SiteSettings
 
 Detailed relationships will be defined in `erd.md`.
 
