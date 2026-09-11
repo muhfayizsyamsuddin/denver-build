@@ -1,93 +1,211 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Denver Build
 
-## Getting Started
+Denver Build is a modern construction company website with a custom admin CMS.
 
-First, run the development server:
+The project was built as a full-stack web application for managing company information, services, projects, testimonials, inquiries, and website settings from a protected admin dashboard.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Live Demo
+
+Public Website:
+
+https://denverbuild.faizms.com
+
+Admin CMS:
+
+https://denverbuild.faizms.com/admin/login
+
+> Admin credentials are not included in this repository.
+
+---
+
+## Features
+
+### Public Website
+
+- Responsive company profile website
+- Home page with featured project
+- Company profile and company history
+- Services showcase
+- Project portfolio
+- Project detail pages
+- Project image gallery
+- Client testimonials
+- Contact and inquiry form
+- WhatsApp contact integration
+- Dynamic SEO metadata
+- Open Graph configuration
+- Responsive navigation
+- Mobile-friendly layout
+
+### Admin CMS
+
+Protected admin dashboard for managing website content.
+
+Admin features include:
+
+- Dashboard statistics
+- Company profile management
+- Services CRUD
+- Projects CRUD
+- Project thumbnail and gallery uploads
+- Testimonials CRUD
+- Inquiry management
+- Inquiry status management
+- Website settings
+- SEO metadata configuration
+- Open Graph image upload
+- Favicon upload
+- Cloudinary media uploads
+- Admin authentication
+- Role-based API protection
+
+---
+
+## Tech Stack
+
+### Frontend
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- Lucide React
+
+### Backend
+
+- Next.js App Router
+- Route Handlers
+- NextAuth.js
+- Zod
+- bcryptjs
+
+### Database
+
+- PostgreSQL
+- Prisma ORM 7
+- Prisma PostgreSQL Adapter
+
+### Media
+
+- Cloudinary
+
+### Infrastructure
+
+- Docker
+- Docker Compose
+- Traefik
+- GitHub Actions
+- VPS deployment
+- Docker Hub
+
+---
+
+## Architecture
+
+```text
+User
+  |
+  v
+Traefik
+  |
+  v
+Next.js Application
+  |
+  +------> Cloudinary
+  |
+  v
+PostgreSQL
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production infrastructure:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Internet
+   |
+   v
+Traefik
+   |
+   v
+Denver Build App Container
+   |
+   v
+Internal Docker Network
+   |
+   v
+PostgreSQL Container
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The PostgreSQL database is not exposed directly to the public internet.
 
-## Learn More
+## Content Management Flow
 
-To learn more about Next.js, take a look at the following resources:
+Example project update:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Admin CMS
+   |
+   v
+Update Project
+   |
+   v
+Admin API
+   |
+   v
+PostgreSQL
+   |
+   v
+Public Website
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Public CMS pages use dynamic server rendering so updated content can be retrieved from the production database without rebuilding the application.
 
-## Deploy on Vercel
+## Security
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project includes:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Password hashing using bcrypt
+JWT-based sessions
+Admin role authorization
+Protected admin routes
+Protected admin API endpoints
+Environment-based secrets
+Zod input validation
+Internal Docker network for PostgreSQL
+Database port not exposed publicly
 
-$ npx create-next-app@latest .
-Need to install the following packages:
-create-next-app@16.3.4
-Ok to proceed? (y) y
+## Responsive Design
 
-√ Would you like to use the recommended Next.js defaults? » No, customize settings
-√ Would you like to use TypeScript? ... No / Yes
-√ Which linter would you like to use? » ESLint
-√ Would you like to use React Compiler? ... No / Yes
-√ Would you like to use Tailwind CSS? ... No / Yes
-√ Would you like your code inside a `src/` directory? ... No / Yes
-√ Would you like to use App Router? (recommended) ... No / Yes
-√ Would you like to customize the import alias (`@/*` by default)? ... No / Yes
-√ Would you like to include AGENTS.md to guide coding agents to write up-to-date Next.js code? ... No / Yes
-Creating a new Next.js app in C:\Users\user\Documents\Project\freelance\denver-build.
+The website is optimized for:
 
-npm install -D prisma@7
-npm install @prisma/client@7
-npx prisma init
+Mobile
+Tablet
+Desktop
 
-buat db di dbvear atau pg admin
-isikan .env dengan DATABASE_URL="postgresql://postgres:postgres123@localhost:5432/denver_build?schema=public"
-lanjut isi prisma/schema.prisma
-setelah itu jalankan perintah untuk validasi -> npx prisma validate
-npx prisma migrate dev --name init -> migrasi tabel ke database
-npx prisma generate -> lanjut generate client prisma
-Lalu cek di DBeaver. Refresh database denver_build dan harus muncul tabel
+The public website and admin dashboard use responsive layouts built with Tailwind CSS.
 
-- buat Prisma client helper di src/lib/prisma.ts
-install adapter: npm install @prisma/adapter-pg pg
-- Seed admin
-intsall bcrypt: npm install bcryptjs
-tambahkan script di package.json "seed": "tsx prisma/seed.ts"
-lalu install tsx: npm install -D tsx
-buat file seed di prisma/seed.ts
-jalnkan seed : npm run seed
-cek di dbeaver apakah sudah ada data admin
+## Purpose
 
-- Auth.js
-install next-auth: npm install next-auth
-buat file src/auth.ts
-buat file src/types/next-auth.d.ts
-buat file route handler auth -> src/app/api/auth/[...nextauth]/route.ts
-tambahkan env AUTH_SECRET="2c27b700acccc381d938209e29c6ea81f58d3f4c5c77470e864c2f20efe8d9af" di .env -> generate: npx auth secret
-build dlu memastikan aman: npm run build
+Denver Build was created as a portfolio project demonstrating the development of a production-style company website with a custom content management system.
 
-- ngoding Protected /admin
+The project demonstrates:
 
-npm install lucide-react
-npm install zod
-npm install sonner
-npm install cloudinary
-    sisa salin env projetc sebelumnya: 
-        CLOUDINARY_CLOUD_NAME="..."
-        CLOUDINARY_API_KEY="..."
-        CLOUDINARY_API_SECRET="..."
+Full-stack development
+CMS architecture
+Authentication
+PostgreSQL database design
+File and image uploads
+SEO implementation
+Docker containerization
+Reverse proxy configuration
+CI/CD deployment
+VPS production deployment
+
+## Author
+
+Muh. Fayiz Syamsuddin
+
+Full-Stack Developer
+
+Portfolio:
+
+https://faizms.my.id
+
+GitHub:
+
+https://github.com/muhfayizsyamsuddin

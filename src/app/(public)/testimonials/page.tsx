@@ -20,6 +20,7 @@ export default async function TestimonialsPage() {
 
   return (
     <main className="bg-neutral-950 text-white">
+      {/* Hero */}
       <section className="border-b border-white/10">
         <div className="mx-auto max-w-7xl px-6 py-20">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
@@ -37,8 +38,9 @@ export default async function TestimonialsPage() {
         </div>
       </section>
 
-      <section>
-        <div className="mx-auto max-w-7xl px-6 py-22">
+      {/* Testimonials */}
+      <section className="border-b border-white/10">
+        <div className="mx-auto max-w-7xl px-6 py-20">
           {testimonials.length === 0 ? (
             <div className="rounded-xl border border-white/10 bg-neutral-900 px-6 py-16 text-center">
               <p className="text-neutral-400">
@@ -46,14 +48,14 @@ export default async function TestimonialsPage() {
               </p>
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
               {testimonials.map((testimonial) => (
                 <article
                   key={testimonial.id}
-                  className="group flex flex-col rounded-xl border border-white/10 bg-neutral-900 p-6 transition hover:border-amber-500/30"
+                  className="group flex h-full min-h-85 flex-col rounded-xl border border-white/10 bg-neutral-900 p-6 transition hover:border-amber-500/30"
                 >
                   {testimonial.rating && (
-                    <p className="text-sm text-amber-400">
+                    <p className="text-sm tracking-wide text-amber-400">
                       {"★".repeat(testimonial.rating)}
                     </p>
                   )}
@@ -65,7 +67,7 @@ export default async function TestimonialsPage() {
                   <div className="mt-8 border-t border-white/10 pt-5">
                     <div className="flex items-center gap-4">
                       {testimonial.clientPhotoUrl && (
-                        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full">
+                        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-white/10">
                           <img
                             src={testimonial.clientPhotoUrl}
                             alt={testimonial.clientName}
@@ -74,14 +76,18 @@ export default async function TestimonialsPage() {
                         </div>
                       )}
 
-                      <div>
+                      <div className="min-w-0">
                         <p className="font-medium text-white transition group-hover:text-amber-400">
                           {testimonial.clientName}
                         </p>
 
-                        {(testimonial.clientRole || testimonial.clientCompany) && (
+                        {(testimonial.clientRole ||
+                          testimonial.clientCompany) && (
                           <p className="mt-1 text-xs text-neutral-500">
-                            {[testimonial.clientRole, testimonial.clientCompany]
+                            {[
+                              testimonial.clientRole,
+                              testimonial.clientCompany,
+                            ]
                               .filter(Boolean)
                               .join(" · ")}
                           </p>
@@ -96,27 +102,32 @@ export default async function TestimonialsPage() {
         </div>
       </section>
 
-      <div className="mt-16 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-6 py-12 text-center sm:px-10">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
-          Work With Us
-        </p>
+      {/* CTA */}
+      <section>
+        <div className="mx-auto max-w-7xl px-6 py-20">
+          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 px-6 py-14 text-center sm:px-10">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
+              Work With Us
+            </p>
 
-        <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight">
-          Ready to start your own project?
-        </h2>
+            <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
+              Ready to start your own project?
+            </h2>
 
-        <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-neutral-400">
-          Tell us about your construction or renovation needs and we&apos;ll help
-          you discuss the next steps.
-        </p>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-neutral-400">
+              Tell us about your construction or renovation needs and
+              we&apos;ll help you discuss the next steps.
+            </p>
 
-        <Link
-          href="/contact"
-          className="mt-7 inline-flex rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
-        >
-          Request a Consultation
-        </Link>
-      </div>
+            <Link
+              href="/contact"
+              className="mt-7 inline-flex rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
+            >
+              Request a Consultation
+            </Link>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
