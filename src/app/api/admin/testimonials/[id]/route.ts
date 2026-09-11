@@ -6,10 +6,10 @@ import { prisma } from "@/lib/prisma";
 
 const testimonialSchema = z.object({
   clientName: z.string().min(1),
-  clientRole: z.string().optional(),
-  clientCompany: z.string().optional(),
+  clientRole: z.string().nullable().optional(),
+  clientCompany: z.string().nullable().optional(),
   content: z.string().min(1),
-  clientPhotoUrl: z.string().optional(),
+  clientPhotoUrl: z.string().nullable().optional(),
   rating: z.number().int().min(1).max(5).nullable(),
   isActive: z.boolean(),
 });

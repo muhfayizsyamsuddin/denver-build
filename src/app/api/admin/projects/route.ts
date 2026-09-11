@@ -12,7 +12,7 @@ const projectSchema = z.object({
   category: z.string().min(1),
   location: z.string().min(1),
   completionYear: z.number().int(),
-  thumbnailUrl: z.string().optional(),
+  thumbnailUrl: z.string().nullable().optional(),
   isFeatured: z.boolean(),
   isPublished: z.boolean(),
   galleryImages: z.array(z.string()),

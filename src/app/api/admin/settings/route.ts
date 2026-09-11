@@ -9,9 +9,9 @@ const settingsSchema = z.object({
   siteDescription: z.string().min(1),
   defaultMetaTitle: z.string().min(1),
   defaultMetaDescription: z.string().min(1),
-  defaultOgImageUrl: z.string().optional(),
-  faviconUrl: z.string().optional(),
-  whatsappMessage: z.string().optional(),
+  defaultOgImageUrl: z.string().nullable().optional(),
+  faviconUrl: z.string().nullable().optional(),
+  whatsappMessage: z.string().nullable().optional(),
 });
 
 export async function PUT(request: Request) {

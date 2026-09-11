@@ -8,8 +8,8 @@ const serviceSchema = z.object({
   name: z.string().min(1),
   slug: z.string().min(1),
   description: z.string().min(1),
-  imageUrl: z.string().optional(),
-  icon: z.string().optional(),
+  imageUrl: z.string().nullable().optional(),
+  icon: z.string().nullable().optional(),
   displayOrder: z.number().int().min(0),
   isActive: z.boolean(),
 });
