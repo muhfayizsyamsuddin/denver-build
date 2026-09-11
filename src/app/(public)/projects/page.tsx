@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
@@ -56,12 +55,10 @@ export default async function ProjectsPage() {
                 >
                   {project.thumbnailUrl && (
                     <div className="relative aspect-16/10 overflow-hidden">
-                      <Image
+                      <img
                         src={project.thumbnailUrl}
                         alt={project.title}
-                        fill
-                        className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                       />
                     </div>
                   )}

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { BadgeCheck, Building2, Hammer, Paintbrush, ShieldCheck, BriefcaseBusiness, Handshake } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-import Image from "next/image";
 
 const serviceIcons = {
   building: Building2,
@@ -116,12 +115,10 @@ export default async function HomePage() {
             >
               <div className="relative">
                 <div className="relative aspect-4/3 overflow-hidden">
-                  <Image
+                  <img
                     src={featuredProjects[0].thumbnailUrl}
                     alt={featuredProjects[0].title}
-                    fill
-                    className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                   />
                 </div>
 
@@ -215,12 +212,10 @@ export default async function HomePage() {
                   >
                     {service.imageUrl && (
                       <div className="relative aspect-16/10 overflow-hidden">
-                        <Image
+                        <img
                           src={service.imageUrl}
                           alt={service.name}
-                          fill
-                          className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                         />
                       </div>
                     )}
@@ -328,12 +323,10 @@ export default async function HomePage() {
                 >
                   {project.thumbnailUrl && (
                     <div className="relative aspect-16/10 overflow-hidden">
-                      <Image
+                      <img
                         src={project.thumbnailUrl}
                         alt={project.title}
-                        fill
-                        className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                       />
                     </div>
                   )}
@@ -415,12 +408,10 @@ export default async function HomePage() {
                     <div className="flex items-center gap-4">
                       {testimonial.clientPhotoUrl && (
                         <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
-                          <Image
+                          <img
                             src={testimonial.clientPhotoUrl}
                             alt={testimonial.clientName}
-                            fill
-                            className="object-cover"
-                            sizes="48px"
+                            className="h-full w-full object-cover"
                           />
                         </div>
                       )}

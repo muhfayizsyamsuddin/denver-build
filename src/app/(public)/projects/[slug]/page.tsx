@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
@@ -113,13 +112,10 @@ export default async function ProjectDetailPage({ params }: Props) {
         <section className="border-b border-white/10">
           <div className="mx-auto max-w-7xl px-6 py-12">
             <div className="relative aspect-video overflow-hidden rounded-xl">
-              <Image
+              <img
                 src={project.thumbnailUrl}
                 alt={project.title}
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="h-full w-full object-cover"
               />
             </div>
           </div>
@@ -155,12 +151,10 @@ export default async function ProjectDetailPage({ params }: Props) {
                   key={image.id}
                   className="relative aspect-4/3 overflow-hidden rounded-xl"
                 >
-                  <Image
+                  <img
                     src={image.imageUrl}
                     alt={image.altText ?? project.title}
-                    fill
-                    className="object-cover transition duration-500 hover:scale-[1.02]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="h-full w-full object-cover transition duration-500 hover:scale-[1.02]"
                   />
                 </div>
               ))}

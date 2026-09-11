@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Testimonials",
@@ -66,13 +65,11 @@ export default async function TestimonialsPage() {
                   <div className="mt-8 border-t border-white/10 pt-5">
                     <div className="flex items-center gap-4">
                       {testimonial.clientPhotoUrl && (
-                        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
-                          <Image
+                        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full">
+                          <img
                             src={testimonial.clientPhotoUrl}
                             alt={testimonial.clientName}
-                            fill
-                            className="object-cover"
-                            sizes="48px"
+                            className="h-full w-full object-cover"
                           />
                         </div>
                       )}
